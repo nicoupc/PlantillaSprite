@@ -44,5 +44,11 @@
     <ClInclude Include="CGuerrero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CInsecto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CInsecto1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

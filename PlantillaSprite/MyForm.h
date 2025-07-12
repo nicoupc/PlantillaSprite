@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CGuerrero.h"
+#include "CInsecto1.h"
 
 namespace PlantillaSprite {
 
@@ -10,6 +11,7 @@ namespace PlantillaSprite {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections::Generic; // Para List<>
 
 	/// <summary>
 	/// Summary for MyForm
@@ -23,6 +25,7 @@ namespace PlantillaSprite {
 		BufferedGraphics^ buffer;
 		BufferedGraphicsContext^ context;
 		int tipoGuerrero; // 1 o 2 según la elección
+		List<CInsecto^>^ enemigos = gcnew List<CInsecto^>();
 
 	public:
 		MyForm(int tipoGuerrero)
@@ -31,9 +34,14 @@ namespace PlantillaSprite {
 			//
 			//TODO: Add the constructor code here
 			//
+			srand(static_cast<unsigned int>(time(0))); // Move srand here and cast time to unsigned int
 			this->tipoGuerrero = tipoGuerrero;
 			guerrero = gcnew CGuerrero(tipoGuerrero);
 			fondo = gcnew Bitmap("fondo.jpg");
+
+			for (int i = 0; i < 5; i++) {
+				enemigos->Add(gcnew CInsecto1());
+			}
 		}
 
 	protected:
@@ -87,7 +95,7 @@ namespace PlantillaSprite {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1101, 696);
+			this->ClientSize = System::Drawing::Size(1100, 700);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::presionarTecla);
@@ -107,6 +115,11 @@ namespace PlantillaSprite {
 		// Mover y dibujar al guerrero
 		guerrero->mover(this->ClientSize.Width, this->ClientSize.Height);
 		guerrero->dibujar(buffer);
+
+		for each (CInsecto ^ insecto in enemigos) {
+			insecto->mover();
+			insecto->dibujar(buffer);
+		}
 
 		lblVidas->Text = "Vidas: " + guerrero->getVidas();
 
