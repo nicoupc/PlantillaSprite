@@ -40,7 +40,8 @@ public:
 		alto = imagen->Height / filas;
 	}
 
-	void mover() {
+	void mover(int anchoVentana, int altoVentana)
+	{
 		switch (direccion) {
 		case Abajo:
 			indiceY = 0;
@@ -71,6 +72,12 @@ public:
 			indiceY = static_cast<int>(ultimaDireccion) - 1;
 			break;
 		}
+
+		// Limitar movimiento dentro de la ventana
+		if (x < 0) x = 0;
+		if (y < 0) y = 0;
+		if (x + ancho > anchoVentana) x = anchoVentana - ancho;
+		if (y + alto > altoVentana) y = altoVentana - alto;
 	}
 
 	void dibujar(BufferedGraphics^ buffer) {

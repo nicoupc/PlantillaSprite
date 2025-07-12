@@ -95,7 +95,7 @@ namespace PlantillaSprite {
 		buffer->Graphics->DrawImage(fondo, 0, 0, this->ClientSize.Width, this->ClientSize.Height);
 
 		// Mover y dibujar al guerrero
-		guerrero->mover();
+		guerrero->mover(this->ClientSize.Width, this->ClientSize.Height);
 		guerrero->dibujar(buffer);
 
 		// Mostrar el dibujo
