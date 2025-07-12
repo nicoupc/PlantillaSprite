@@ -1,0 +1,116 @@
+#pragma once
+
+#include "CGuerrero.h"
+
+namespace PlantillaSprite {
+
+	using namespace System;
+	using namespace System::ComponentModel;
+	using namespace System::Collections;
+	using namespace System::Windows::Forms;
+	using namespace System::Data;
+	using namespace System::Drawing;
+
+	/// <summary>
+	/// Summary for MyForm
+	/// </summary>
+	public ref class MyForm : public System::Windows::Forms::Form
+	{
+	private:
+		CGuerrero^ guerrero;
+		Timer^ timer;
+		BufferedGraphics^ buffer;
+		BufferedGraphicsContext^ context;
+		int tipoGuerrero; // 1 o 2 según la elección
+
+	public:
+		MyForm(int tipoGuerrero)
+		{
+			InitializeComponent();
+			//
+			//TODO: Add the constructor code here
+			//
+			this->tipoGuerrero = tipoGuerrero;
+			guerrero = gcnew CGuerrero(tipoGuerrero);
+		}
+
+	protected:
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		~MyForm()
+		{
+			if (components)
+			{
+				delete components;
+			}
+		}
+	private: System::Windows::Forms::Timer^ timer1;
+	protected:
+	private: System::ComponentModel::IContainer^ components;
+
+	private:
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+
+
+#pragma region Windows Form Designer generated code
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		void InitializeComponent(void)
+		{
+			this->components = (gcnew System::ComponentModel::Container());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->SuspendLayout();
+			// 
+			// timer1
+			// 
+			this->timer1->Enabled = true;
+			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
+			// 
+			// MyForm
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->ClientSize = System::Drawing::Size(517, 505);
+			this->Name = L"MyForm";
+			this->Text = L"MyForm";
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::presionarTecla);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::soltarTecla);
+			this->ResumeLayout(false);
+
+		}
+#pragma endregion
+	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		Graphics^ g = this->CreateGraphics();
+		BufferedGraphicsContext^ context = BufferedGraphicsManager::Current;
+		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
+
+		// Limpiar la pantalla
+		buffer->Graphics->Clear(Color::White);
+
+		// Mover y dibujar al guerrero
+		guerrero->mover();
+		guerrero->dibujar(buffer);
+
+		// Mostrar el dibujo
+		buffer->Render();
+
+		// Liberar recursos
+		delete buffer;
+		delete g;
+	}
+	private: System::Void soltarTecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		guerrero->setDireccion(Ninguna);
+	}
+	private: System::Void presionarTecla(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+		if (e->KeyCode == Keys::W) guerrero->setDireccion(Arriba);
+		else if (e->KeyCode == Keys::S) guerrero->setDireccion(Abajo);
+		else if (e->KeyCode == Keys::A) guerrero->setDireccion(Izquierda);
+		else if (e->KeyCode == Keys::D) guerrero->setDireccion(Derecha);
+	}
+	};
+}
