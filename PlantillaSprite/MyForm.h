@@ -17,6 +17,7 @@ namespace PlantillaSprite {
 	public ref class MyForm : public System::Windows::Forms::Form
 	{
 	private:
+		Bitmap^ fondo;
 		CGuerrero^ guerrero;
 		Timer^ timer;
 		BufferedGraphics^ buffer;
@@ -32,6 +33,7 @@ namespace PlantillaSprite {
 			//
 			this->tipoGuerrero = tipoGuerrero;
 			guerrero = gcnew CGuerrero(tipoGuerrero);
+			fondo = gcnew Bitmap("fondo.jpg");
 		}
 
 	protected:
@@ -75,7 +77,7 @@ namespace PlantillaSprite {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(517, 505);
+			this->ClientSize = System::Drawing::Size(1101, 696);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::presionarTecla);
@@ -90,7 +92,7 @@ namespace PlantillaSprite {
 		BufferedGraphics^ buffer = context->Allocate(g, this->ClientRectangle);
 
 		// Limpiar la pantalla
-		buffer->Graphics->Clear(Color::White);
+		buffer->Graphics->DrawImage(fondo, 0, 0, this->ClientSize.Width, this->ClientSize.Height);
 
 		// Mover y dibujar al guerrero
 		guerrero->mover();
