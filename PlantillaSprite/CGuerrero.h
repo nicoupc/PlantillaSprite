@@ -1,6 +1,7 @@
 #pragma once
 using namespace System;
 using namespace System::Drawing;
+using namespace System::IO;
 
 enum DireccionGuerrero { Ninguna, Abajo, Izquierda, Derecha, Arriba };
 
@@ -17,8 +18,24 @@ private:
 
 public:
 	CGuerrero(int tipo) {
-		x = 0;
-		y = 0;
+		try {
+			StreamReader^ lector = gcnew StreamReader("PARAMETROS.txt");
+
+			String^ lineaX = lector->ReadLine(); // Lee: "x=100"
+			String^ lineaY = lector->ReadLine(); // Lee: "y=150"
+
+			// Sacar los números
+			x = Convert::ToInt32(lineaX->Replace("x=", ""));
+			y = Convert::ToInt32(lineaY->Replace("y=", ""));
+
+			lector->Close();
+		}
+		catch (Exception^ ex) {
+			// Si hay error, usar valores por defecto
+			x = 100;
+			y = 100;
+		}
+
 		ancho = 32;
 		alto = 48;
 		indiceX = 0;
