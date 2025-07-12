@@ -40,7 +40,10 @@ public:
 		alto = 48;
 		indiceX = 0;
 		indiceY = 0;
-		vidas = 3;
+
+		Random^ r = gcnew Random();
+		vidas = r->Next(1, 6); // Entre 1 y 5
+
 		velocidad = 15;
 		direccion = Ninguna;
 		ultimaDireccion = Abajo;
@@ -123,5 +126,6 @@ public:
 
 	int getX() { return x; }
 	int getY() { return y; }
+	int getVidas() { return vidas; }
 };
 

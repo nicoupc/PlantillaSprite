@@ -50,6 +50,7 @@ namespace PlantillaSprite {
 	private: System::Windows::Forms::Timer^ timer1;
 	protected:
 	private: System::ComponentModel::IContainer^ components;
+	private: System::Windows::Forms::Label^ lblVidas;
 
 	private:
 		/// <summary>
@@ -72,6 +73,15 @@ namespace PlantillaSprite {
 			// 
 			this->timer1->Enabled = true;
 			this->timer1->Tick += gcnew System::EventHandler(this, &MyForm::timer1_Tick);
+			// lblVidas
+			this->lblVidas = gcnew System::Windows::Forms::Label();
+			this->lblVidas->Location = System::Drawing::Point(10, 10);
+			this->lblVidas->Size = System::Drawing::Size(130, 30);
+			this->lblVidas->Font = gcnew System::Drawing::Font("Arial", 14, FontStyle::Bold);
+			this->lblVidas->ForeColor = System::Drawing::Color::Black;
+			this->lblVidas->BackColor = System::Drawing::Color::Transparent;
+			this->lblVidas->Text = "Vidas: ";
+			this->Controls->Add(this->lblVidas);
 			// 
 			// MyForm
 			// 
@@ -97,6 +107,8 @@ namespace PlantillaSprite {
 		// Mover y dibujar al guerrero
 		guerrero->mover(this->ClientSize.Width, this->ClientSize.Height);
 		guerrero->dibujar(buffer);
+
+		lblVidas->Text = "Vidas: " + guerrero->getVidas();
 
 		// Mostrar el dibujo
 		buffer->Render();
