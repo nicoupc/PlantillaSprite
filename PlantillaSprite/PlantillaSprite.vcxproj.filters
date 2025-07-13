@@ -53,5 +53,8 @@
     <ClInclude Include="CInsecto2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CInsecto3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

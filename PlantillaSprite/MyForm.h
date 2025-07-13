@@ -3,6 +3,7 @@
 #include "CGuerrero.h"
 #include "CInsecto1.h"
 #include "CInsecto2.h"
+#include "CInsecto3.h"
 
 namespace PlantillaSprite {
 
@@ -40,9 +41,11 @@ namespace PlantillaSprite {
 			guerrero = gcnew CGuerrero(tipoGuerrero);
 			fondo = gcnew Bitmap("fondo.jpg");
 
+			// Agregar enemigos
 			for (int i = 0; i < 5; i++) {
 				enemigos->Add(gcnew CInsecto1());
 				enemigos->Add(gcnew CInsecto2());
+				enemigos->Add(gcnew CInsecto3());
 			}
 		}
 
