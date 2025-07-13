@@ -2,6 +2,7 @@
 
 #include "CGuerrero.h"
 #include "CInsecto1.h"
+#include "CInsecto2.h"
 
 namespace PlantillaSprite {
 
@@ -41,6 +42,7 @@ namespace PlantillaSprite {
 
 			for (int i = 0; i < 5; i++) {
 				enemigos->Add(gcnew CInsecto1());
+				enemigos->Add(gcnew CInsecto2());
 			}
 		}
 
@@ -95,7 +97,7 @@ namespace PlantillaSprite {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1100, 700);
+			this->ClientSize = System::Drawing::Size(1200, 800);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::presionarTecla);
