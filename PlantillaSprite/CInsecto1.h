@@ -18,8 +18,14 @@ public:
 		// Movimiento horizontal continuo
 		x += velocidad;
 
+		// Establecer dirección visual (horizontal)
+		if (velocidad > 0)
+			indiceY = 2; // Derecha
+		else
+			indiceY = 1; // Izquierda
+
 		// Rebote en bordes simulando ida y vuelta
-		if (x <= 0 || x + (ancho * escala) >= 800) { // ajustá 800 según tu ancho real
+		if (x <= 0 || x + (ancho * escala) >= 900) { // ajustá 900 según tu ancho real
 			velocidad *= -1;
 		}
 	}
