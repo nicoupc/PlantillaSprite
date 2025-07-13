@@ -4,6 +4,7 @@
 #include "CInsecto1.h"
 #include "CInsecto2.h"
 #include "CInsecto3.h"
+#include "CRayo.h"
 
 namespace PlantillaSprite {
 
@@ -27,7 +28,13 @@ namespace PlantillaSprite {
 		BufferedGraphics^ buffer;
 		BufferedGraphicsContext^ context;
 		int tipoGuerrero; // 1 o 2 según la elección
-		List<CInsecto^>^ enemigos = gcnew List<CInsecto^>();
+		List<CInsecto^>^ enemigos;
+		List<CRayo^>^ rayos;
+		int puntos = 0;
+		int eliminados1 = 0;
+		int eliminados2 = 0;
+		int eliminados3 = 0;
+
 
 	public:
 		MyForm(int tipoGuerrero)
@@ -41,12 +48,16 @@ namespace PlantillaSprite {
 			guerrero = gcnew CGuerrero(tipoGuerrero);
 			fondo = gcnew Bitmap("fondo.jpg");
 
+			enemigos = gcnew List<CInsecto^>();
+
 			// Agregar enemigos
 			for (int i = 0; i < 5; i++) {
 				enemigos->Add(gcnew CInsecto1());
 				enemigos->Add(gcnew CInsecto2());
 				enemigos->Add(gcnew CInsecto3());
 			}
+
+			rayos = gcnew List<CRayo^>();
 		}
 
 	protected:
@@ -89,7 +100,7 @@ namespace PlantillaSprite {
 			// lblVidas
 			this->lblVidas = gcnew System::Windows::Forms::Label();
 			this->lblVidas->Location = System::Drawing::Point(10, 10);
-			this->lblVidas->Size = System::Drawing::Size(130, 30);
+			this->lblVidas->Size = System::Drawing::Size(280, 30); // Ajustá el tamaño según sea necesario
 			this->lblVidas->Font = gcnew System::Drawing::Font("Arial", 14, FontStyle::Bold);
 			this->lblVidas->ForeColor = System::Drawing::Color::Black;
 			this->lblVidas->BackColor = System::Drawing::Color::Transparent;
@@ -126,7 +137,44 @@ namespace PlantillaSprite {
 			insecto->dibujar(buffer);
 		}
 
-		lblVidas->Text = "Vidas: " + guerrero->getVidas();
+		lblVidas->Text = "Vidas: " + guerrero->getVidas() + " | Puntos: " + puntos;
+
+		for (int i = 0; i < rayos->Count; i++) {
+			CRayo^ rayo = rayos[i];
+			rayo->mover();
+			rayo->dibujar(buffer);
+
+			if (rayo->fueraDePantalla(this->ClientSize.Width, this->ClientSize.Height)) {
+				rayos->RemoveAt(i);
+				i--; // corregir el índice después de eliminar
+			}
+		}
+
+		for (int i = 0; i < rayos->Count; i++) {
+			CRayo^ rayo = rayos[i];
+
+			for (int j = 0; j < enemigos->Count; j++) {
+				CInsecto^ insecto = enemigos[j];
+
+				if (rayo->obtenerRectangulo().IntersectsWith(insecto->obtenerRectangulo())) {
+					// Eliminar insecto y rayo
+					enemigos->RemoveAt(j);
+					rayos->RemoveAt(i);
+					i--; // corregimos índice por eliminación
+					puntos += 3;
+
+					// Actualizar contador de tipo de insecto eliminado
+					String^ tipo = insecto->GetType()->Name;
+
+					if (tipo == "CInsecto1") eliminados1++;
+					else if (tipo == "CInsecto2") eliminados2++;
+					else if (tipo == "CInsecto3") eliminados3++;
+
+					break; // salir del bucle interno
+				}
+			}
+		}
+
 
 		// Mostrar el dibujo
 		buffer->Render();
@@ -143,6 +191,15 @@ namespace PlantillaSprite {
 		else if (e->KeyCode == Keys::S) guerrero->setDireccion(Abajo);
 		else if (e->KeyCode == Keys::A) guerrero->setDireccion(Izquierda);
 		else if (e->KeyCode == Keys::D) guerrero->setDireccion(Derecha);
+
+		if (e->KeyCode == Keys::Space) {
+			int direccion = static_cast<int>(guerrero->getUltimaDireccion());
+			int px = guerrero->getX() + 10; // Ajustá según la posición del sprite
+			int py = guerrero->getY() + 10;
+
+			rayos->Add(gcnew CRayo(px, py, direccion));
+		}
+
 	}
 	};
 }

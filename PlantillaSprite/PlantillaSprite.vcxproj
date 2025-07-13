@@ -133,6 +133,7 @@
     <ClInclude Include="CInsecto1.h" />
     <ClInclude Include="CInsecto2.h" />
     <ClInclude Include="CInsecto3.h" />
+    <ClInclude Include="CRayo.h" />
     <ClInclude Include="MenuPrincipal.h">
       <FileType>CppForm</FileType>
     </ClInclude>
