@@ -34,7 +34,8 @@ namespace PlantillaSprite {
 		int eliminados1 = 0;
 		int eliminados2 = 0;
 		int eliminados3 = 0;
-
+		DateTime tiempoInicio;
+		bool juegoFinalizado = false;
 
 	public:
 		MyForm(int tipoGuerrero)
@@ -43,6 +44,8 @@ namespace PlantillaSprite {
 			//
 			//TODO: Add the constructor code here
 			//
+			tiempoInicio = DateTime::Now;
+
 			srand(static_cast<unsigned int>(time(0))); // Move srand here and cast time to unsigned int
 			this->tipoGuerrero = tipoGuerrero;
 			guerrero = gcnew CGuerrero(tipoGuerrero);
@@ -132,7 +135,7 @@ namespace PlantillaSprite {
 		guerrero->mover(this->ClientSize.Width, this->ClientSize.Height);
 		guerrero->dibujar(buffer);
 
-		for each (CInsecto ^ insecto in enemigos) {
+		for each(CInsecto ^ insecto in enemigos) {
 			insecto->mover();
 			insecto->dibujar(buffer);
 		}
@@ -175,6 +178,35 @@ namespace PlantillaSprite {
 			}
 		}
 
+		if (puntos >= 30 && !juegoFinalizado) {
+			juegoFinalizado = true;
+
+			TimeSpan tiempoTotal = DateTime::Now - tiempoInicio;
+			int segundos = tiempoTotal.Seconds + tiempoTotal.Minutes * 60;
+
+			String^ mensaje = "¡¡YOU WIN!!\n\n"
+				+ "El Guerrero 1 eliminó lo siguiente:\n"
+				+ eliminados1 + " Insectos 1\n"
+				+ eliminados2 + " Insectos 2\n"
+				+ eliminados3 + " Insectos 3\n\n"
+				+ "En " + segundos + " segundos";
+
+			MessageBox::Show(mensaje, "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+			// Detener el timer (opcional)
+			timer1->Enabled = false;
+
+			// cerrar la ventana
+			this->Close();
+		}
+
+		if (guerrero->getVidas() <= 0 && !juegoFinalizado) {
+			juegoFinalizado = true;
+
+			MessageBox::Show("GAME OVER", "Derrota", MessageBoxButtons::OK, MessageBoxIcon::Error);
+			timer1->Enabled = false;
+			this->Close(); // Cerrar la ventana del juego
+		}
 
 		// Mostrar el dibujo
 		buffer->Render();

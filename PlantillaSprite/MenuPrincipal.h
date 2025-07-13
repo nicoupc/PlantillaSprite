@@ -147,7 +147,9 @@ namespace PlantillaSprite {
 #pragma endregion
 	private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
 		VentanaSeleccionGuerrero^ ventanaSeleccionGuerrero = gcnew VentanaSeleccionGuerrero();
+		this->Hide(); // Ocultar el menú principal
 		ventanaSeleccionGuerrero->ShowDialog();
+		this->Show(); // Volver a mostrar el menú principal después de cerrar la ventana de selección
 	}
 	private: System::Void btnInstrucciones_Click(System::Object^ sender, System::EventArgs^ e) {
 		VentanaInstrucciones^ ventanaInstrucciones = gcnew VentanaInstrucciones();

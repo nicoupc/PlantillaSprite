@@ -137,14 +137,16 @@ namespace PlantillaSprite {
 	private: System::Void btnElegir1_Click(System::Object^ sender, System::EventArgs^ e) {
 		tipoGuerrero = 1; // Asignar tipo de guerrero
 		MyForm^ myForm = gcnew MyForm(tipoGuerrero);
-		myForm->Show(); // Mostrar la ventana del juego
-		this->Hide(); // Ocultar la ventana de selección de guerrero
+		this->Hide(); // Ocultar la ventana de selección
+		myForm->ShowDialog(); // Mostrar la ventana del juego
+		this->Close(); // Cerrar la ventana de selección
 	}
 	private: System::Void btnElegir2_Click(System::Object^ sender, System::EventArgs^ e) {
 		tipoGuerrero = 2; // Asignar tipo de guerrero
 		MyForm^ myForm = gcnew MyForm(tipoGuerrero);
-		myForm->Show(); // Mostrar la ventana del juego
-		this->Hide(); // Ocultar la ventana de selección de guerrero
+		this->Hide(); // Ocultar la ventana de selección
+		myForm->ShowDialog(); // Mostrar la ventana del juego
+		this->Close(); // Cerrar la ventana de selección
 	}
 	};
 }
