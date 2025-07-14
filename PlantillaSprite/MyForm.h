@@ -140,8 +140,6 @@ namespace PlantillaSprite {
 			insecto->dibujar(buffer);
 		}
 
-		lblVidas->Text = "Vidas: " + guerrero->getVidas() + " | Puntos: " + puntos;
-
 		for (int i = 0; i < rayos->Count; i++) {
 			CRayo^ rayo = rayos[i];
 			rayo->mover();
@@ -190,6 +188,8 @@ namespace PlantillaSprite {
 			}
 		}
 
+		lblVidas->Text = "Vidas: " + guerrero->getVidas() + " | Puntos: " + puntos;
+
 		if (puntos >= 30 && !juegoFinalizado) {
 			juegoFinalizado = true;
 
@@ -198,9 +198,6 @@ namespace PlantillaSprite {
 
 			TimeSpan tiempoTotal = DateTime::Now - tiempoInicio;
 			int segundos = tiempoTotal.Seconds + tiempoTotal.Minutes * 60;
-
-			// cerrar la ventana
-			this->Close();
 
 			String^ mensaje = "¡¡YOU WIN!!\n\n"
 				+ "El Guerrero 1 eliminó lo siguiente:\n"
@@ -211,14 +208,14 @@ namespace PlantillaSprite {
 
 			MessageBox::Show(mensaje, "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
+			// cerrar la ventana
+			this->Close();
 		}
 
 		if (guerrero->getVidas() <= 0 && !juegoFinalizado) {
 			juegoFinalizado = true;
 
 			timer1->Enabled = false;
-
-			this->Close(); // Cerrar la ventana del juego
 
 			// Mostrar mensaje de derrota GAME OVER
 			String^ mensaje = "GAME OVER\n\n"
@@ -230,6 +227,8 @@ namespace PlantillaSprite {
 				+ eliminados3 + " Insectos 3";
 
 			MessageBox::Show(mensaje, "GAME OVER", MessageBoxButtons::OK, MessageBoxIcon::Error);
+
+			this->Close(); // Cerrar la ventana del juego
 		}
 
 		// Mostrar el dibujo
