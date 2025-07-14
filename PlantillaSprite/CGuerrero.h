@@ -124,6 +124,10 @@ public:
 		y = ny;
 	}
 
+	void reducirVidas() {
+		vidas--;
+	}
+
 	int getX() { return x; }
 	int getY() { return y; }
 	int getVidas() { return vidas; }

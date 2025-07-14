@@ -178,11 +178,29 @@ namespace PlantillaSprite {
 			}
 		}
 
+		for (int i = 0; i < enemigos->Count; i++) {
+			if (guerrero->obtenerRectangulo().IntersectsWith(enemigos[i]->obtenerRectangulo())) {
+
+				guerrero->reducirVidas(); // Método nuevo que vamos a crear
+
+				enemigos->RemoveAt(i); // El insecto desaparece al tocar al guerrero
+				i--; // Ajustar índice
+
+				break; // Solo pierde una vida por colisión
+			}
+		}
+
 		if (puntos >= 30 && !juegoFinalizado) {
 			juegoFinalizado = true;
 
+			// Detener el timer (opcional)
+			timer1->Enabled = false;
+
 			TimeSpan tiempoTotal = DateTime::Now - tiempoInicio;
 			int segundos = tiempoTotal.Seconds + tiempoTotal.Minutes * 60;
+
+			// cerrar la ventana
+			this->Close();
 
 			String^ mensaje = "¡¡YOU WIN!!\n\n"
 				+ "El Guerrero 1 eliminó lo siguiente:\n"
@@ -193,19 +211,25 @@ namespace PlantillaSprite {
 
 			MessageBox::Show(mensaje, "Victoria", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
-			// Detener el timer (opcional)
-			timer1->Enabled = false;
-
-			// cerrar la ventana
-			this->Close();
 		}
 
 		if (guerrero->getVidas() <= 0 && !juegoFinalizado) {
 			juegoFinalizado = true;
 
-			MessageBox::Show("GAME OVER", "Derrota", MessageBoxButtons::OK, MessageBoxIcon::Error);
 			timer1->Enabled = false;
+
 			this->Close(); // Cerrar la ventana del juego
+
+			// Mostrar mensaje de derrota GAME OVER
+			String^ mensaje = "GAME OVER\n\n"
+				+ "El Guerrero 1 fue derrotado.\n"
+				+ "Puntos obtenidos: " + puntos + "\n\n"
+				+ "Insectos eliminados:\n"
+				+ eliminados1 + " Insectos 1\n"
+				+ eliminados2 + " Insectos 2\n"
+				+ eliminados3 + " Insectos 3";
+
+			MessageBox::Show(mensaje, "GAME OVER", MessageBoxButtons::OK, MessageBoxIcon::Error);
 		}
 
 		// Mostrar el dibujo
